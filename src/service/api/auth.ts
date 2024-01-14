@@ -1,4 +1,5 @@
 import { mockRequest } from '../request';
+import {request} from '../request';
 
 /**
  * 获取验证码
@@ -38,4 +39,12 @@ export function fetchUserRoutes(userId: string) {
  */
 export function fetchUpdateToken(refreshToken: string) {
   return mockRequest.post<ApiAuth.Token>('/updateToken', { refreshToken });
+}
+
+/**
+ * 登录
+ * @param params
+ */
+export function authLogin(params) {
+	return request.post('/admin/umsUserAuth/login', params);
 }

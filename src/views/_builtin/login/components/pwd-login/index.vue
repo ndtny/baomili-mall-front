@@ -73,7 +73,7 @@ async function handleSubmit() {
 
   const { userName, password } = model;
 
-  login(userName, password);
+  await login(userName, password);
 }
 
 function handleLoginOtherAccount(param: { userName: string; password: string }) {

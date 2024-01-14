@@ -1,7 +1,7 @@
 import { unref, nextTick } from 'vue';
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import { fetchLogin, fetchUserInfo } from '@/service';
+import {authLogin, fetchLogin, fetchUserInfo} from '@/service';
 import { useRouterPush } from '@/composables';
 import { localStg } from '@/utils';
 import { $t } from '@/locales';
@@ -115,11 +115,22 @@ export const useAuthStore = defineStore('auth-store', {
      */
     async login(userName: string, password: string) {
       this.loginLoading = true;
-      const { data } = await fetchLogin(userName, password);
-      if (data) {
-        await this.handleActionAfterLogin(data);
-      }
-      this.loginLoading = false;
+      // const { data } = await fetchLogin(userName, password);
+			let params = {
+				identityType: "password",
+				identityId: userName,
+				credential: password
+			}
+			authLogin(params).then(({data}: any) => {
+				console.log("data", data)
+				if (data && data.code === 200) {
+					console.log(111)
+					// await this.handleActionAfterLogin(data.data);
+				}
+				this.loginLoading = false;
+			}).catch(() => {
+				this.loginLoading = false;
+			})
     },
     /**
      * 更换用户权限(切换账号)
